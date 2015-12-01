@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <button id="mybutton">click me</button>
+    <script>
+        var b = document.getElementById("mybutton");
+        b.onclick = function() {alert("Thanks for clicking me!");};
+        b.addEventListener("click", function(){alert("Thanks again!");}, false);
+    </script>
+</body>
+</html>
