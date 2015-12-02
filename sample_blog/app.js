@@ -8,11 +8,37 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+//添加session会话支持
+var session = require('express-session');
+//添加connect-mongo
+var MongoStore = require('connect-mongo')(session);
+
 var app = express();
+
+//set the settings
+var settings = require('./settings');
+
+// set the connect-flash
+var flash = require('connect-flash');
+
+app.use(session({
+  secret: settings.cookieSecret,
+  key: settings.db,
+  cookie: {maxAge: 1000*60*60*24*30},
+
+  store: new MongoStore({
+    db: settings.db,
+    host: settings.host,
+    port: settings.port
+  })
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// set use flash
+app.use(flash());
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
