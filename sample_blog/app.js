@@ -1,4 +1,18 @@
 var express = require('express');
+var multer  = require('multer');
+
+var app = express();
+
+app.use(multer({
+  dest: './public/images',
+  rename: function (fieldname, filename) {
+    return filename;
+  }
+}));
+
+//set the settings
+var settings = require('./settings');
+
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -13,14 +27,6 @@ var session = require('express-session');
 //添加connect-mongo
 var MongoStore = require('connect-mongo')(session);
 
-var app = express();
-
-//set the settings
-var settings = require('./settings');
-
-// set the connect-flash
-var flash = require('connect-flash');
-
 app.use(session({
   secret: settings.cookieSecret,
   key: settings.db,
@@ -32,6 +38,24 @@ app.use(session({
     port: settings.port
   })
 }));
+
+
+
+
+// set the connect-flash
+var flash = require('connect-flash');
+
+// muler实现文件上传
+/*
+var multer = require('multer');
+app.use(multer({
+  dest:'./public/images',                 // 上传文件所在的目录
+  rename: function(fieldname, filename){  // 用来修改上传后的文件名，这里设置为保存原文件名
+    return filename;
+  }
+}));
+*/
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
