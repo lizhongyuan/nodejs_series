@@ -134,6 +134,11 @@ module.exports = function(app) {
       error: req.flash('error').toString()
     });
   });
+  app.post('/upload', checkLogin);
+  app.post('/upload', function (req, res) {
+    req.flash('success', '文件上传成功!');
+    res.redirect('/upload');
+  });
 
   function checkLogin(req, res, next) {
     if (!req.session.user) {
