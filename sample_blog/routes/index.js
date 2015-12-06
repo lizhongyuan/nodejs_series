@@ -4,7 +4,7 @@ var crypto = require('crypto'),
 
 module.exports = function(app) {
   app.get('/', function (req, res) {
-    Post.get(null, function(err, posts){
+    Post.getAll(null, function(err, posts){
       if(err) {
         posts = [];
       }
@@ -139,6 +139,7 @@ module.exports = function(app) {
     req.flash('success', '文件上传成功!');
     res.redirect('/upload');
   });
+
 
   function checkLogin(req, res, next) {
     if (!req.session.user) {

@@ -54,7 +54,7 @@ Post.prototype.save = function(callback) {
 };
 
 //读取文章及其相关信息
-Post.get = function(name, callback) {
+Post.getAll = function(name, callback) {
     //打开数据库
     mongodb.open(function (err, db) {
         if (err) {
@@ -87,3 +87,27 @@ Post.get = function(name, callback) {
         });
     });
 };
+
+Post.getOne = function(name, day, title, callback){
+    mongodb.open(function(err, db){
+        if(err)
+            return callback(err);
+        //读取posts集合
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+            collection.findOne({
+
+            }, function(err, doc){
+                mongodb.close();
+                if(err)
+                    return callback(err);
+                //解析markdown为html
+                doc.post = markdown.toHTML(doc.post);
+                callback(null, doc);
+            });
+        });
+    });
+}
