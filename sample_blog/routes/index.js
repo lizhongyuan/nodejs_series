@@ -158,12 +158,14 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/u/:name/:day/:title', checkLogin);
   app.get('/u/:name/:day/:title', function(req, res){
-    Post.getOne(req.params.name, req.params.day, req.param.title, function(err, post){
+    Post.getOne(req.params.name, req.params.day, req.params.title, function(err, post){
       if(err) {
         req.flash('error', err);
         res.redirect('/');
       }
+      console.log("post:" + post);
       res.render('article', {
         title:req.params.title,
         post:post,

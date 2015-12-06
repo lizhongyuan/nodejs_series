@@ -89,6 +89,7 @@ Post.getAll = function(name, callback) {
 };
 
 Post.getOne = function(name, day, title, callback){
+    console.log(name, day, title);
     mongodb.open(function(err, db){
         if(err)
             return callback(err);
@@ -99,7 +100,9 @@ Post.getOne = function(name, day, title, callback){
                 return callback(err);
             }
             collection.findOne({
-
+                "name": name,
+                "time.day": day,
+                "title": title
             }, function(err, doc){
                 mongodb.close();
                 if(err)
