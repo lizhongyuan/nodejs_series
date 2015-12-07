@@ -1,9 +1,17 @@
 var mongodb = require('./db'),
     markdown = require('markdown').markdown;
 
+/*
 function Post(name, title, post) {
     this.name = name;
     this.title = title;
+    this.post = post;
+}
+*/
+function Post(name, title, tags, post) {
+    this.name = name;
+    this.title = title;
+    this.tags = tags;
     this.post = post;
 }
 
@@ -22,10 +30,20 @@ Post.prototype.save = function(callback) {
         date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
     }
     //要存入数据库的文档
+    /*
     var post = {
         name: this.name,
         time: time,
         title: this.title,
+        post: this.post,
+        comments: []
+    };
+    */
+    var post = {
+        name: this.name,
+        time: time,
+        title: this.title,
+        tags: this.tags,
         post: this.post,
         comments: []
     };
