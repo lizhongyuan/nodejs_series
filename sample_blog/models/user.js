@@ -51,7 +51,7 @@ User.get = function(name, callback){
         // 读取users集合
         db.collection('users', function(err, collection){
             if(err){
-                mongo.close();
+                mongodb.close();
                 return callback(err);
             }
             //查找用户名(name键)值为name一个文档
