@@ -32,9 +32,25 @@ module.exports = function(app) {
             isTopFighter : isTopFighter
         });
 
-        newPlayer.save(function(err, player){
-            if(err) {}
-            //req.session.player = player;
+        // 判断是否已经有这个队员了
+        Player.get(newPlayer.playerID, function(err, player){
+            if(err) {
+                return res.redirect('/');
+            }
+            if(player) {    // 已经有这个队员了, redirect至/regPlayer
+                // req.flash();
+                req.flash();
+                return res.redirect('/regPlayer');
+            }
+            newPlayer.save(function(err, player) {
+                if(err) {
+                    // req.flash();
+                    res.redirect('/regPlayer');
+                }
+                req.session.player = player;
+                //req.flash();
+                res.redirect('/');  //注册成功后返回首页
+            });
         });
     });
 
@@ -60,38 +76,26 @@ module.exports = function(app) {
             password: password,
             email: req.body.email
         });
-        /*
          //检查用户名是否已经存在
          User.get(newUser.name, function (err, user) {
-         if (err) {
-         req.flash('error', err);
-         return res.redirect('/');
-         }
-         if (user) {
-         req.flash('error', '用户已存在!');
-         return res.redirect('/reg');//返回注册页
-         }
-         //如果不存在则新增用户
-         newUser.save(function (err, user) {
-         if (err) {
-         req.flash('error', err);
-         return res.redirect('/reg');//注册失败返回主册页
-         }
-         req.session.user = newUser;//用户信息存入 session
-         req.flash('success', '注册成功!');
-         res.redirect('/');//注册成功后返回主页
+             if (err) {
+                 req.flash('error', err);
+                 return res.redirect('/');
+             }
+             if (user) {
+                 req.flash('error', '用户已存在!');
+                 return res.redirect('/reg');//返回注册页
+             }
+             //如果不存在则新增用户
+             newUser.save(function (err, user) {
+                 if (err) {
+                     req.flash('error', err);
+                     return res.redirect('/reg');//注册失败返回主册页
+                 }
+                 req.session.user = newUser;//用户信息存入 session
+                 req.flash('success', '注册成功!');
+                 res.redirect('/');//注册成功后返回主页
+             });
          });
-         });
-         */
-        //如果不存在则新增用户
-        newUser.save(function (err, user) {
-            if (err) {
-                req.flash('error', err);
-                return res.redirect('/reg');//注册失败返回主册页
-            }
-            req.session.user = newUser;//用户信息存入 session
-            req.flash('success', '注册成功!');
-            res.redirect('/');//注册成功后返回主页
-        });
     });
 }

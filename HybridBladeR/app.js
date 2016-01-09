@@ -30,7 +30,6 @@ app.use(flash());
 
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-
 app.use(session({
   secret: settings.cookieSecret,
   key: settings.db,//cookie name
