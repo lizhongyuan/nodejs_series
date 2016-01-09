@@ -29,16 +29,6 @@ Post.prototype.save = function(callback) {
         minute : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
         date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
     }
-    //要存入数据库的文档
-    /*
-    var post = {
-        name: this.name,
-        time: time,
-        title: this.title,
-        post: this.post,
-        comments: []
-    };
-    */
     var post = {
         name: this.name,
         time: time,

@@ -86,7 +86,7 @@ module.exports = function(app) {
         return res.redirect('/login');
       }
       if (user.password != password) {
-        req.flash('error', '密码错误!');
+        req.flash('errer', '密码错误!');
         return res.redirect('/login');
       }
       req.session.user = user;

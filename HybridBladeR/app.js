@@ -1,3 +1,6 @@
+//set the settings
+var settings = require('./settings');
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -22,6 +25,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+//添加session会话支持
+var session = require('express-session');
+//添加connect-mongo
+var MongoStore = require('connect-mongo')(session);
+
 /*
 app.use('/', routes);
 app.use('/users', users);
@@ -34,6 +43,21 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+/*
+ * 使用session, he mongodb(session)
+ */
+app.use(session({
+  secret: settings.cookieSecret,
+  key: settings.db,
+  cookie: {maxAge: 1000*60*60*24*30},
+
+  store: new MongoStore({
+    db: settings.db,
+    host: settings.host,
+    port: settings.port
+  })
+}));
 
 // error handlers
 

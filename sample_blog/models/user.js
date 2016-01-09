@@ -55,7 +55,7 @@ User.get = function(name, callback){
                 return callback(err);
             }
             //查找用户名(name键)值为name一个文档
-            collection.findOne({name:name}, function(err, user){
+            collection.findOne({"name":name}, function(err, user){
                 mongodb.close();
                 if(err) {
                     return callback(err);
