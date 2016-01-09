@@ -1,4 +1,5 @@
 var settings = require('./settings');
+var flash = require('connect-flash');
 
 var express = require('express');
 var path = require('path');
@@ -23,6 +24,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(flash());
 
 
 var session = require('express-session');
