@@ -9,8 +9,7 @@ module.exports = function(app) {
     });
 
     app.get('/regPlayer', function(req, res){
-        res.render('regPlayer', {
-        });
+        res.render('regPlayer', {});
     });
 
     /*
