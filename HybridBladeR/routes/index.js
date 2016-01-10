@@ -39,7 +39,7 @@ module.exports = function(app) {
             }
             if(player) {    // 已经有这个队员了, redirect至/regPlayer
                 // req.flash();
-                req.flash();
+                //req.flash();
                 return res.redirect('/regPlayer');
             }
             newPlayer.save(function(err, player) {
