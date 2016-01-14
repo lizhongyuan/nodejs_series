@@ -78,30 +78,37 @@ module.exports = function(app) {
         var tfNum = 0;
         var topLeaders = [];
         var tlNum = 0;
-        for(var i = 5; i >= 1; i--) {
+        for(var i = 4; i >= 1; i--) {
             var curTopFighterNumid = "topFighter" + String(i) + "id";
             var curTopFighterNumplayerid = "topFighter" + String(i) + "playerid";
 
-            if (req.body[curTopFighterNumid] == null || req.body[curTopFighterNumplayerid] == null) {
-                break;
+            if (req.body[curTopFighterNumid] == "" || req.body[curTopFighterNumplayerid] == "") {
+                console.log(curTopFighterNumid + ":" + req.body[curTopFighterNumid]);
+                console.log(curTopFighterNumplayerid + ":" + req.body[curTopFighterNumplayerid]);
+                continue;
             }
-            var curTopFighter = [curTopFighterNumid, curTopFighterNumplayerid];
+            var curTopFighter = [req.body[curTopFighterNumid], req.body[curTopFighterNumplayerid]];
             topFighters.splice(0, 0, curTopFighter);
             tfNum++;
         }
+        console.log("tfNum: " + String(tfNum));
         topFighters.splice(0, 0, tfNum);
 
-        for(var i = 5; i >= 1; i--) {
+        for(var i = 2; i >= 1; i--) {
             var curTopLeaderNumid = "topLeader" + String(i) + "id";
             var curTopLeaderNumplayerid = "topLeader" + String(i) + "playerid";
 
-            if (req.body[curTopLeaderNumid] == null || req.body[curTopLeaderNumplayerid] == null) {
-                break;
+            if (req.body[curTopLeaderNumid] == "" || req.body[curTopLeaderNumplayerid] == "") {
+                //break;
+                console.log("curTopLeaderNumid: " + req.body[curTopLeaderNumid]);
+                console.log("curTopLeaderNumplayerid: " + req.body[curTopLeaderNumplayerid]);
+                continue;
             }
-            var curTopLeader = [curTopLeaderNumid, curTopLeaderNumplayerid];
+            var curTopLeader = [req.body[curTopLeaderNumid], req.body[curTopLeaderNumplayerid]];
             topLeaders.splice(0, 0, curTopLeader);
             tlNum++;
         }
+        console.log("tlNum: " + String(tlNum));
         topLeaders.splice(0, 0, tlNum);
 
         var newTeam = new Team({
