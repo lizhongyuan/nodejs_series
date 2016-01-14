@@ -1,4 +1,5 @@
 var Player = require('../models/player.js');
+var Team = require('../models/team.js');
 var User = require('../models/user.js');
 
 
@@ -53,6 +54,82 @@ module.exports = function(app) {
             });
         });
     });
+
+    app.get('/regTeam', function(req, res){
+        res.render('regTeam', {title:"注册队员"});
+    });
+    app.post('/regTeam', function(req, res){
+        var id = req.body.id,
+            name = req.body.name,
+            player1 = [ req.body.player1id, req.body.player1playerID],
+            player2 = [ req.body.player2id, req.body.player2playerID],
+            player3 = [ req.body.player3id, req.body.player3playerID],
+            player4 = [ req.body.player4id, req.body.player4playerID],
+            player5 = [ req.body.player5id, req.body.player5playerID],
+            players = [player1, player2, player3, player4, player5],
+            region = req.body.region,
+            level = req.body.level,
+            ranking = req.body.ranking,
+            stability = req.body.stability,
+            style = req.body.style,
+            desc = req.body.desc;
+
+        var topFighters = [];
+        var tfNum = 0;
+        var topLeaders = [];
+        var tlNum = 0;
+        for(var i = 5; i >= 1; i--) {
+            var curTopFighterNumid = "topFighter" + String(i) + "id";
+            var curTopFighterNumplayerid = "topFighter" + String(i) + "playerid";
+
+            if (req.body[curTopFighterNumid] == null || req.body[curTopFighterNumplayerid] == null) {
+                break;
+            }
+            var curTopFighter = [curTopFighterNumid, curTopFighterNumplayerid];
+            topFighters.splice(0, 0, curTopFighter);
+            tfNum++;
+        }
+        topFighters.splice(0, 0, tfNum);
+
+        for(var i = 5; i >= 1; i--) {
+            var curTopLeaderNumid = "topLeader" + String(i) + "id";
+            var curTopLeaderNumplayerid = "topLeader" + String(i) + "playerid";
+
+            if (req.body[curTopLeaderNumid] == null || req.body[curTopLeaderNumplayerid] == null) {
+                break;
+            }
+            var curTopLeader = [curTopLeaderNumid, curTopLeaderNumplayerid];
+            topLeaders.splice(0, 0, curTopLeader);
+            tlNum++;
+        }
+        topLeaders.splice(0, 0, tlNum);
+
+        var newTeam = new Team({
+            id : id,
+            name : name,
+            players : players,
+            region : region,
+            level : level,
+            ranking : ranking,
+            stability : stability,
+            style : style,
+            topFighters : topFighters,
+            topLeaders : topLeaders,
+            desc : desc
+        });
+
+        newTeam.save(function(err, team){
+            if(err){
+                console.log("save the team error.");
+                // req.flash();
+                res.redirect('/regPlayer');
+            }
+            req.session.team = team;
+            //req.flash();
+            res.redirect('/');  //注册成功后返回首页
+        });
+    });
+
 
     app.get('/reg', function(req, res){
         res.render('reg', { title: '注册' });
