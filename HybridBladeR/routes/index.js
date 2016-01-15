@@ -137,6 +137,57 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/bet', function(req, res){
+        res.render('bet', {title:"预测比赛"});
+    });
+    app.post('/bet', function(req, res){
+        var team1Name = req.body.team1;
+        var team2Name = req.body.team2;
+
+        Team.get(team1Name, function(err, team){
+            if(err) {
+                console.log(err);
+            }
+            console.log(team.id);
+            console.log(team.players[0][0]);
+            console.log(team.players[0]);
+        });
+        Team.get(team2Name, function(err, team){
+            if(err) {
+                console.log(err);
+            }
+            console.log(team.id);
+            console.log(team.players[0][0]);
+            console.log(team.players[0]);
+        });
+
+
+        //var team1, team2;
+        /*
+        Team.get("Ehome", function(err, team){
+            if(err) {
+                console.log("can't open the mongo.");
+                console.log(err);
+                return res.redirect('/');
+            }
+            team1 = new Team(team);
+            console.log(team1.id);
+            console.log(team1.region);
+        });
+        Team.get("EG", function(err, team){
+            if(err) {
+                console.log("can't open the mongo.");
+                console.log(err);
+                return res.redirect('/');
+            }
+            team2 = new Team(team);
+            console.log(team2.id);
+            console.log(team2.region);
+        });
+        console.log(team1.region);
+        console.log(team2.region);
+        */
+    });
 
     app.get('/reg', function(req, res){
         res.render('reg', { title: '注册' });

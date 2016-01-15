@@ -50,7 +50,7 @@ newTeam.save(function(err, team){
 });
 */
 
-Team.get("VG", function(err, team){
+Team.get("EG", function(err, team){
     if(err) {
         console.log(err);
     }
