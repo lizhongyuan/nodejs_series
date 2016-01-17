@@ -5,6 +5,17 @@ var mongodb = require('./db');
 
 module.exports = Team;
 
+var toTheStr = function(pArray) {
+    var resStr = "";
+    for (var i = 0; i < pArray.length; i++) {
+        var curItemStr = "\"" + String(pArray[i]) + "\"";
+        resStr += curItemStr;
+        if (i != pArray.length - 1)
+            resStr += ","
+    }
+    return resStr;
+}
+
 function Team(){}
 
 function Team(team) {
@@ -70,4 +81,45 @@ Team.get = function(teamName, callback){
             });
         })
     })
+}
+
+
+/*
+Team.getBetTeams = function(teams, callback){
+    mongodb.open(function(err, db){
+        if(err) callback(err);
+        db.collection('teams', function(err, collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.find('{\'name\':{\"$in\":i[' + toTheStr(teams) + "]}}", function(err, team){
+                mongodb.close();
+                if(err) callback(err);
+                callback(null, teams);
+            });
+        })
+    });
+}
+*/
+
+Team.getBetTeams = function(teamName, callback){
+    mongodb.open(function(err, db){
+        if(err) callback(err);
+        db.collection('teams', function(err, collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.find(
+                {
+                    "name":{$in:["EG", "Ehome"]
+                }
+            }).toArray(function(err, teams){
+                mongodb.close();
+                if(err) callback(err);
+                callback(null, teams);
+            });
+        });
+    });
 }

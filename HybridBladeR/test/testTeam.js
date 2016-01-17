@@ -50,6 +50,7 @@ newTeam.save(function(err, team){
 });
 */
 
+/*
 Team.get("EG", function(err, team){
     if(err) {
         console.log(err);
@@ -57,4 +58,10 @@ Team.get("EG", function(err, team){
     console.log(team.id);
     console.log(team.players[0][0]);
     console.log(team.players[0]);
+});
+*/
+
+var teams = ["EG", "Ehome"];
+Team.getBetTeams(teams, function(err, teams){
+    console.log(teams);
 });
