@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>node中的ajax请求(html5页面)</title>
+    <script type="text/javascript" src="../jquery/jquery-2.2.0.min.js"></script>
+    <script>
+        $(function() {
+            alert("Fuck");
+            $("#send").click(function(){
+                $("#resText").load("./test.html");
+            });
+        });
+    </script>
+</head>
+<body>
+    <input type="button", id="send" value="Ajax获取"/>
+    <div class="comment">已有评论</div>
+    <div id="resText"></div>
+</body>
+</html>

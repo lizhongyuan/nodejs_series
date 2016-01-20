@@ -4,14 +4,25 @@
     <meta charset="UTF-8"/>
     <title>Blog</title>
     <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <script src="../jquery/jquery-2.2.0.min.js"></script>
+    <script>
+        $("#send").click(function(){
+            $.post("/bet", {
+                team1: $("#team1").val(),
+                team2: $("#team2").val()
+            }, function(data, textStatus){
+                alert(data);
+            });
+        });
+    </script>
 </head>
 <body>
 <form method="post">
     Team1: <input type="text" name="team1" ><br />
     Team2: <input type="text" name="team2" ><br />
-    <input type="submit" value="计算"/><br />
-    Win: <label type="text" name="win_team" value="None">None</label><br />
-    Weight: <label type="text" name="weight" value="None">None</label>
+    <input type="submit" id="send" value="计算" onclick=""/><br />
+    Win: <label type="text" name="win_team" value="None"></label><br />
+    Weight: <label type="text" name="weight" value="None"></label>
 </form>
 </article>
 </body>

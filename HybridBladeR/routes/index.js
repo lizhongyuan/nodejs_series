@@ -1,6 +1,7 @@
 var Player = require('../models/player.js');
 var Team = require('../models/team.js');
 var User = require('../models/user.js');
+var Bet = require('../strategy/bet.js');
 
 
 module.exports = function(app) {
@@ -141,9 +142,18 @@ module.exports = function(app) {
         res.render('bet', {title:"预测比赛"});
     });
     app.post('/bet', function(req, res){
-        var team1Name = req.body.team1;
-        var team2Name = req.body.team2;
-
+        var teams = [req.body.team1, req.body.team2];
+        var result = Bet(teams);
+        //console.log(result);
+        var ajaxText = {
+            tips: result
+        }
+        /*
+        res.writeHeader();
+        res.write(ajaxText);
+        */
+        res.send(ajaxText);
+        /*
         Team.get(team1Name, function(err, team){
             if(err) {
                 console.log(err);
@@ -160,6 +170,7 @@ module.exports = function(app) {
             console.log(team.players[0][0]);
             console.log(team.players[0]);
         });
+        */
     });
 
     app.get('/reg', function(req, res){
