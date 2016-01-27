@@ -4,15 +4,29 @@
     <meta charset="UTF-8"/>
     <title>Blog</title>
     <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <script src="javascripts/jquery-1.12.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#send").click(function(){
+                $.post("/bet",{
+                    para1:"1",
+                    para2:"2"
+                }, function(data, status){
+                    alert("1")
+                    $("button").html(data)       // OK!!!
+                    alert("2")
+                });
+            });
+        });
+    </script>
 </head>
 <body>
-<form method="post">
+<button>向页面发送 HTTP GET 请求，然后获得返回的结果</button>
     Team1: <input type="text" name="team1" ><br />
     Team2: <input type="text" name="team2" ><br />
-    <input type="submit" value="计算"/><br />
-    Win: <label type="text" name="win_team" value="None">None</label><br />
-    Weight: <label type="text" name="weight" value="None">None</label>
-</form>
-</article>
+    <input type="text" id="send" value="计算" onclick=""/><br />
+Win: <label type="text" id="win_team" value="None"></label><br />
+Weight: <label type="text" id="weight" value="None"></label>
+<div id="resText"></div>
 </body>
 </html>

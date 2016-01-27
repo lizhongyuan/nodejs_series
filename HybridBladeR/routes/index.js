@@ -143,16 +143,21 @@ module.exports = function(app) {
     });
     app.post('/bet', function(req, res){
         var teams = [req.body.team1, req.body.team2];
+        /*
         var result = Bet(teams);
-        //console.log(result);
         var ajaxText = {
             tips: result
         }
-        /*
-        res.writeHeader();
-        res.write(ajaxText);
         */
+        var ajaxText = "teamA";
         res.send(ajaxText);
+
+        //等于res.send
+        /*
+        res.write(ajaxText);
+        res.end();
+        */
+
         /*
         Team.get(team1Name, function(err, team){
             if(err) {
