@@ -5,26 +5,27 @@
 var request = require('request');
 var cheerio = require('cheerio');
 var debug = require('debug');
+var async = require('async');
 
-var totalPageTasks = [];
+var promise = require("bluebird");
+//使用bluebird将request库的所有异步方法编译成promise形式，会自动加上Async后缀
+request = promise.promisifyAll(request);
 
-//request('http://dota2.vpgame.com/guess.html', function(err, res){   // for test
-var getCurPageTask = function(curTaskUrl, callback) {
+//var totalPageTasks = [];
+
+var getCurPageTask = function(curTaskUrl, curIndex, callback) {
+    console.log(curIndex);
     var curPageTasks = [];
     request(curTaskUrl, function (err, res) {
         if (err) return callback(err);
 
         var $ = cheerio.load(res.body.toString());
         var spinachItems = $('div.spinach-item');
-        /*
-        console.log(spinachItems.length);
-        */
 
         spinachItems.each(function () {
             var curItem = $(this);
             var matchType = curItem.find('i').attr("class");
             if (matchType != "dota2-icon") {
-                //continue;
                 return;
             }
             var matchName = curItem.find('span.spinach-league').text();
@@ -32,26 +33,45 @@ var getCurPageTask = function(curTaskUrl, callback) {
             var rightTeam = curItem.find('div.spinach-item-team.pull-right div.spinach-item-data span.ellipsis').text();
             var boNum = curItem.find('div.spinach-item div.spinach-item-vs span').text();
 
-            curPageTasks.splice(curPageTasks.length, 0, [leftTeam, rightTeam]);
+            curPageTasks.splice(curPageTasks.length, 0, [leftTeam, rightTeam, boNum, matchName]);
         });
-        callback(null, curPageTasks);
+        if(curIndex-- <= 0){
+            callback(null, curPageTasks);
+        }
     });
-    //console.log("-------");
 }
 
 
-var getTasks = function(pageNum, callback) {
+//var getTasks = function(pageNum, callback) {
+var getTasks = function(pageNum, totalPageTasks, callback) {
     var preUrl = "http://dota2.vpgame.com/guess/default-index.html?ajax=yw1&page=";
+    var urlList = [];
     for(var i = 1; i <= pageNum; i++){
+        /*
         var curPageUrl = preUrl + String(i);
         getCurPageTask(curPageUrl, function(err, array){
             totalPageTasks += array;
-            console.log(array);
+            callback(totalPageTasks);
         });
+        */
+        var curPageUrl = preUrl + String(i);
+        urlList.splice(urlList.length, 0, curPageUrl);
     }
-    callback(totalPageTasks)
+    //console.log(urlList);
+    //var totalPageTasks = [];
+
+    async.eachSeries(urlList, function(curPageUrl, next){
+        getCurPageTask(curPageUrl,pageNum, function(err, array){
+            totalPageTasks += array;
+            //console.log(totalPageTasks);
+        });
+        next();
+    }, function(err){
+        console.log("...");
+        callback(totalPageTasks);
+    });
 }
 
-getTasks(2, function(){
-    console.log(totalPageTasks)
+getTasks(2, [], function(totalPageTasks){
+    //console.log(totalPageTasks)
 });
