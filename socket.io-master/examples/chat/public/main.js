@@ -59,6 +59,7 @@ $(function() {
     // if there is a non-empty message and a socket connection
     if (message && connected) {
       $inputMessage.val('');
+      // 将当前输入的内容加载到显示栏, 并不通信
       addChatMessage({
         username: username,
         message: message
@@ -74,8 +75,15 @@ $(function() {
     addMessageElement($el, options);
   }
 
+  /*
+   * 将输入的文字显示在屏幕上
+   */
   // Adds the visual chat message to the message list
   function addChatMessage (data, options) {
+
+    /*
+     * 从getTypingMessages获得信息
+     */
     // Don't fade the message in if there is an 'X was typing'
     var $typingMessages = getTypingMessages(data);
     options = options || {};
@@ -84,9 +92,11 @@ $(function() {
       $typingMessages.remove();
     }
 
+    // username的信息
     var $usernameDiv = $('<span class="username"/>')
       .text(data.username)
-      .css('color', getUsernameColor(data.username));
+      .css('color', getUsernameColor(data.username));   //设置颜色
+    // messageBody的信息
     var $messageBodyDiv = $('<span class="messageBody">')
       .text(data.message);
 
@@ -227,6 +237,7 @@ $(function() {
 
   // Whenever the server emits 'login', log the login message
   socket.on('login', function (data) {
+    console.log("socket.on login.");
     connected = true;
     // Display the welcome message
     var message = "Welcome to Socket.IO Chat – ";
@@ -236,6 +247,9 @@ $(function() {
     addParticipantsMessage(data);
   });
 
+  /*
+   * 1. 先发送new message的data, 然后
+   */
   // Whenever the server emits 'new message', update the chat body
   socket.on('new message', function (data) {
     addChatMessage(data);
