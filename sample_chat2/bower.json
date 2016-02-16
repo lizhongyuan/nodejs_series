@@ -1,0 +1,22 @@
+{
+  "name": "sample_chat2",
+  "description": "sample_chat2's bower",
+  "main": "",
+  "authors": [
+    "lizhongyuan <hybridblader@163.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/lizhongyuan/nodejs_series",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "angular": "^1.5.0"
+  }
+}
