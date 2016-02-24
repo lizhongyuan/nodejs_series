@@ -33,9 +33,23 @@ server.on('listening', onListening);
  * add a io
  */
 var io = require('socket.io').listen(server);
+/*
+var messages = [];
 io.sockets.on("connection", function(socket){
-  //socket.emit("connected");
+  socket.on("getAllMessages", function(){
+    // 将所有消息推送到客户端
+    socket.emit("allMessages", messages);
+  });
+
+  socket.on("createMessage", function(message){
+    console.log("createMessage");
+    messages.push(message);
+    socket.emit("messageAdded", message);
+  });
 });
+*/
+var ioService = require("../socket/io.js");
+ioService(io);
 
 /**
  * Normalize a port into a number, string, or false.
