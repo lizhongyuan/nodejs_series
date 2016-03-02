@@ -1,20 +1,17 @@
 angular.module('techNodeApp', [])
 
-//socket.on()
 angular.module('techNodeApp').factory('socketService', ["$rootScope", function($rootScope) {
-    // var socket = io.connect('/')
     //为了避免跨域请求，需要将原来的var socket = io.connect('/')改成下面这一行
     // var socket = io.connect('http://localhost:3000/')
     //或者采用socket官方主页上面的方法 var socket = io()
-    //var socket = io.connect('/');
     var socket = io();
     return {
         on: function(eventName, callback) {
+            // socket.on ====== arguments =====>>> socket.on cb
             socket.on(eventName, function() {
-                var args = arguments            //
+                var args = arguments            //socket.io通信接收到的数据message
                 $rootScope.$apply(function() {
-                    callback.apply(socket, args)
-                    //callback.apply(socket, arguments)
+                    callback.apply(socket, args)    //此时在匿名函数中，所以需要向上跳两层，直接调用socket
                 })
             })
         },
@@ -90,15 +87,15 @@ angular.module('techNodeApp').directive('autoScrollToBottom', function() {
 });
 
 //angular.module('techNodeApp').controller('RoomCtrl', function($scope, socket) {
-angular.module('techNodeApp').controller('RoomCtrl', ["$scope", "socketService", function($scope, socket) {
+angular.module('techNodeApp').controller('RoomCtrl', ["$scope", "socketService", function($scope, socketService) {
     $scope.messages = []
     console.log("try to getAllMessages.");
-    socket.emit('getAllMessages')
-    socket.on('allMessage', function (messages) {
+    socketService.emit('getAllMessages')
+    socketService.on('allMessage', function (messages) {
         console.log("Client get all messages.");
         $scope.messages = messages
     })
-    socket.on('messageAdded', function (message) {
+    socketService.on('messageAdded', function (message) {
         $scope.messages.push(message)
     })
 }])
