@@ -1,6 +1,9 @@
 var express = require('express');
 var multer  = require('multer');
 
+var passport = require("passport");
+var GithubStrategy = require("passport-github").Strategy;
+
 var app = express();
 
 app.use(multer({
@@ -72,6 +75,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//初始化Passport
+app.use(passport.initialize());
+
 routes(app);
 
 // catch 404 and forward to error handler
@@ -82,6 +88,15 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
+
+//use GithubStrategy
+passport.use(new GithubStrategy({
+  clientID:"4604b31b8340c02d34ec",
+  clientSecret: "1497410b46bb5e032bd568d7e4e61973486127b0",
+  callbackURL: "http://localhost:3000/login/github/callback"
+}, function(accessToken, refreshToken, profile, done){
+  done(null, profile);
+}));
 
 // development error handler
 // will print stacktrace

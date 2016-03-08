@@ -3,6 +3,8 @@ var crypto = require('crypto'),
     Post = require('../models/post.js'),
     Comment = require('../models/comment.js');
 
+var passport = require("passport");
+
 module.exports = function(app) {
   app.get('/', function (req, res) {
     Post.getAll(null, function(err, posts){
