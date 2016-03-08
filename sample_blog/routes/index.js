@@ -78,6 +78,20 @@ module.exports = function(app) {
     });
   });
 
+  app.get("/login/github", passport.authenticate("github", {session: false}));
+  app.get("/login/github/callback", passport.authenticate("github", {
+    session: false,
+    failureRedirect: "/login",
+    successFlash: "登陆成功?"
+  }), function(req, res){
+    req.session.user = {
+      name: req.user.username,
+      //head: "https://gravatar.com/avatar/" + req.user._json.gravatar_id + ""
+      head: ""
+    };
+    res.redirect("/");
+  });
+
   app.post('/login', checkNotLogin);
   app.post('/login', function (req, res) {
     var md5 = crypto.createHash('md5'),
